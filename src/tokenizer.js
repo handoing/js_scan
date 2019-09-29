@@ -1,6 +1,6 @@
-const Scanner = require('./scanner.js');
-const Reader = require('./reader.js');
-const { TokenName } = require('./token.js');
+const Scanner = require("./scanner.js");
+const Reader = require("./reader.js");
+const { TokenName } = require("./token.js");
 
 class Tokenizer {
   constructor(code) {

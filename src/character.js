@@ -8,62 +8,94 @@ const Regex = {
 
 const Character = {
 
-  /* tslint:disable:no-bitwise */
-
   fromCodePoint(cp) {
-      return (cp < 0x10000) ? String.fromCharCode(cp) :
-          String.fromCharCode(0xD800 + ((cp - 0x10000) >> 10)) +
-          String.fromCharCode(0xDC00 + ((cp - 0x10000) & 1023));
+    return cp < 0x10000
+      ? String.fromCharCode(cp)
+      : String.fromCharCode(0xd800 + ((cp - 0x10000) >> 10)) +
+          String.fromCharCode(0xdc00 + ((cp - 0x10000) & 1023));
   },
 
   // https://tc39.github.io/ecma262/#sec-white-space
-
+  // 空格
   isWhiteSpace(cp) {
-      return (cp === 0x20) || (cp === 0x09) || (cp === 0x0B) || (cp === 0x0C) || (cp === 0xA0) ||
-          (cp >= 0x1680 && [0x1680, 0x2000, 0x2001, 0x2002, 0x2003, 0x2004, 0x2005, 0x2006, 0x2007, 0x2008, 0x2009, 0x200A, 0x202F, 0x205F, 0x3000, 0xFEFF].indexOf(cp) >= 0);
+    return (
+      cp === 0x20 ||
+      cp === 0x09 ||
+      cp === 0x0b ||
+      cp === 0x0c ||
+      cp === 0xa0 ||
+      (cp >= 0x1680 &&
+        [
+          0x1680,
+          0x2000,
+          0x2001,
+          0x2002,
+          0x2003,
+          0x2004,
+          0x2005,
+          0x2006,
+          0x2007,
+          0x2008,
+          0x2009,
+          0x200a,
+          0x202f,
+          0x205f,
+          0x3000,
+          0xfeff
+        ].indexOf(cp) >= 0)
+    );
   },
 
   // https://tc39.github.io/ecma262/#sec-line-terminators
-
+  // 行结束符
   isLineTerminator(cp) {
-      return (cp === 0x0A) || (cp === 0x0D) || (cp === 0x2028) || (cp === 0x2029);
+    return cp === 0x0a || cp === 0x0d || cp === 0x2028 || cp === 0x2029;
   },
 
   // https://tc39.github.io/ecma262/#sec-names-and-keywords
-
+  // 以标识符开始
   isIdentifierStart(cp) {
-      return (cp === 0x24) || (cp === 0x5F) ||  // $ (dollar) and _ (underscore)
-          (cp >= 0x41 && cp <= 0x5A) ||         // A..Z
-          (cp >= 0x61 && cp <= 0x7A) ||         // a..z
-          (cp === 0x5C) ||                      // \ (backslash)
-          ((cp >= 0x80) && Regex.NonAsciiIdentifierStart.test(Character.fromCodePoint(cp)));
+    return (
+      cp === 0x24 ||
+      cp === 0x5f || // $ (dollar) and _ (underscore)
+      (cp >= 0x41 && cp <= 0x5a) || // A..Z
+      (cp >= 0x61 && cp <= 0x7a) || // a..z
+      cp === 0x5c || // \ (backslash)
+      (cp >= 0x80 &&
+        Regex.NonAsciiIdentifierStart.test(Character.fromCodePoint(cp)))
+    );
   },
-
+  // 属于标识符
   isIdentifierPart(cp) {
-      return (cp === 0x24) || (cp === 0x5F) ||  // $ (dollar) and _ (underscore)
-          (cp >= 0x41 && cp <= 0x5A) ||         // A..Z
-          (cp >= 0x61 && cp <= 0x7A) ||         // a..z
-          (cp >= 0x30 && cp <= 0x39) ||         // 0..9
-          (cp === 0x5C) ||                      // \ (backslash)
-          ((cp >= 0x80) && Regex.NonAsciiIdentifierPart.test(Character.fromCodePoint(cp)));
+    return (
+      cp === 0x24 ||
+      cp === 0x5f || // $ (dollar) and _ (underscore)
+      (cp >= 0x41 && cp <= 0x5a) || // A..Z
+      (cp >= 0x61 && cp <= 0x7a) || // a..z
+      (cp >= 0x30 && cp <= 0x39) || // 0..9
+      cp === 0x5c || // \ (backslash)
+      (cp >= 0x80 &&
+        Regex.NonAsciiIdentifierPart.test(Character.fromCodePoint(cp)))
+    );
   },
 
   // https://tc39.github.io/ecma262/#sec-literals-numeric-literals
-
+  // 数字
   isDecimalDigit(cp) {
-      return (cp >= 0x30 && cp <= 0x39);      // 0..9
+    return cp >= 0x30 && cp <= 0x39; // 0..9
   },
-
+  // 十六进制
   isHexDigit(cp) {
-      return (cp >= 0x30 && cp <= 0x39) ||    // 0..9
-          (cp >= 0x41 && cp <= 0x46) ||       // A..F
-          (cp >= 0x61 && cp <= 0x66);         // a..f
+    return (
+      (cp >= 0x30 && cp <= 0x39) || // 0..9
+      (cp >= 0x41 && cp <= 0x46) || // A..F
+      (cp >= 0x61 && cp <= 0x66)
+    ); // a..f
   },
-
+  // 八进制
   isOctalDigit(cp) {
-      return (cp >= 0x30 && cp <= 0x37);      // 0..7
+    return cp >= 0x30 && cp <= 0x37; // 0..7
   }
-
 };
 
 module.exports = Character;

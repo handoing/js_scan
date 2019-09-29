@@ -1,4 +1,4 @@
-const Tokenizer = require('./tokenizer.js');
+const Tokenizer = require("./tokenizer.js");
 
 function tokenize(code) {
   const tokenizer = new Tokenizer(code);
